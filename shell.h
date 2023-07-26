@@ -6,10 +6,10 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <string.h>
 #include <fcntl.h>
 #include <signal.h>
-
+#include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -29,7 +29,7 @@ int hist;
 extern char **environ;
 
 char **_strtok(char *line, char *delim);
-
+int hsh(info_t *, char **);
 char *ric_get_location(char *command);
 char *_itoa(int num);
 char *ric_error_env(char **args);
