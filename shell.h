@@ -29,7 +29,7 @@ int hist;
 extern char **environ;
 
 char **_strtok(char *line, char *delim);
-int hsh(info_t *, char **);
+int hsh(ino_t *, char **);
 char *ric_get_location(char *command);
 char *_itoa(int num);
 char *ric_error_env(char **args);
