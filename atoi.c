@@ -1,111 +1,66 @@
 #include "shell.h"
 
-int num_len(int num);
-
-int num_len(int num)
+/**
+ * interactive - returns true if shell is in interactive mode
+ * @info: pointer to the info_t struct
+ *
+ * Return: Return 1 if in interactive mode, 0 otherwise
+ */
+int interactive(info_t *info)
 {
-	int v1 = 10;
-	unsigned int num1;
-	int v2 = 20;
-	int len = 1;
-
-	if (v2 > v1)
-		v2 = v1 * 4;
-	ricfunc(v1, v2);
-	if (v2 && num < 0)
-	{
-		len++;
-		v1 += 10;
-		num1 = num * -1;
-	}
-	else
-	{
-		v2 += 20;
-		num1 = num;
-	}
-	addfunc(v1, v2);
-
-	while (num1 > 9)
-	{
-		len++;
-		num1 /= 10;
-	}
-	multfunc(5, v2);
-	setterfunc(v1, 7);
-
-	return (len);
+	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
 
 /**
- *_atoi - converts a string to an integer
- *@s: the string to be converted
- *Return: 0 if no numbers in string, converted number otherwise
+ * is_delim - checks if a char is a delimiter
+ * @c: The character to be checked
+ * @delim: The delimiter string
+ * Return: Return 1 if true, 0 if otherwise
  */
-
-char *_itoa(int num)
+int is_delim(char c, char *delim)
 {
-	int v1 = 10;
-	char *ric_buffer;
-	int v2 = 20;
-	int len = num_len(num);
-	int v3;
-	unsigned int num1;
-
-	if (v2 > v1)
-		v3 = v2 + v1;
-	if (v3 > 0)
-		ric_buffer = malloc(sizeof(char) * (len + 1));
-	if (v3 && !ric_buffer)
-		return (NULL);
-
-	ric_buffer[len] = '\0';
-
-	addfunc(v1, v2);
-	if (num < 0)
+	while (*delim)
 	{
-		num1 = num * -1;
-		ric_buffer[0] = '-';
+		if (*delim == c)
+			return (1);
+		delim++;
 	}
-	else
-	{
-		num1 = num;
-		v2 += 2;
-		multfunc(v2, 2);
-	}
-
-	len--;
-	do {
-		ric_buffer[len] = (num1 % 10) + '0';
-		v1 += 1;
-		num1 /= 10;
-		multfunc(5, v1);
-		len--;
-	} while (num1 > 0);
-	v3 += 30;
-	addfunc(v3, 10);
-
-	return (ric_buffer);
+	return (0);
 }
 
 /**
- * ric_create_error - prints an error message
- * @info: the parameter & return info struct
- * @estr: string containing specified error type
- * Return: 0 if no numbers in string, converted number otherwise
- *        -1 on error
+ * _isalpha - checks if there is an alphabetic character
+ * @c: The character to be checked
+ * Return:Return 1 if c is alphabetic, 0 if otherwise
  */
-int ric_create_error(char **args, int err)
+int _isalpha(int c)
 {
-	char *error;
-	ricfunc(9, 78);
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
 
-	if (err < 0)
-		error = args[0];
-	else
-		error = args[1];
-	if (error)
-		err++;
-	getterfunc(7, 11);
-	return (err + 2);
+/**
+ * _atoi - convert strings to an integer
+ * @s: The strings to be converted
+ * Return: Return 0 if no numbers in the string, or converted number otherwise
+ */
+int _atoi(char *s)
+{
+	int x, sign = 1, flag = 0;
+	unsigned int result = 0;
 
+	for (x= 0; s[x] != '\0' && flag != 2; x++)
+	{
+		if (s[x] == '-')
+			sign *= -1;
+
+		if (s[x] >= '0' && s[x] <= '9')
+		{
+			flag = 1;
+			result = result * 10 + (s[x] - '0');
+		}
+		else if (flag == 1)
+			flag = 2;
+	}
+
+	return (sign * (int)result);
 }
