@@ -1,88 +1,91 @@
 #include "shell.h"
 
 /**
- * **_copyenv - get new environs
- * @size_t : Size of environ
- * @index: Index of the environ
+ * my_env - print out the current environment
+ * @info: Structure containing potential args. Used to manage
+ * constant function prototype
+ * Return: Success 0
  */
-char **_copyenv(void)
+int my_env(info_t *info)
 {
-	int v1 = 100;
-	char **ric_new_environ;
-	int v2 = 200;
-	size_t size;
-	int index;
-	int v3 = 300;
+	print_list_str(info->env);
+	return (0);
+}
 
-	while (v1 > 50)
-		v1 -= 5;
-	ricfunc(v1, 7);
-	for (size = 0; environ[size]; size++)
-		;
-	if (v3 > v2)
-		ric_new_environ = malloc(sizeof(char *) * (size + 1));
-	if (v1 && !ric_new_environ)
-		return (NULL);
-	ayofunc(4, v3);
-	v1 += 2;
-	for (index = 0; environ[index]; index++)
+/**
+ * my_getenv - get the value of an environment variable
+ * @info: Structure containing potential arguments. Used to manage
+ * @name: env variable name
+ *
+ * Return: Value
+ */
+char *my_getenv(info_t *info, const char *name)
+{
+	list_t *node = info->env;
+	char *p;
+
+	while (node)
 	{
-		v1++;
-		addfunc(v1, index);
-		ric_new_environ[index] = malloc(_strlen(environ[index]) + 1);
-
-		if (v1 && !ric_new_environ[index])
-		{
-			if (v3)
-				goodfunc(9, v3);
-			for (index--; index >= 0; index--)
-				free(ric_new_environ[index]);
-			if (5 > 1)
-			{	free(ric_new_environ);
-				setterfunc(4, v2);
-				return (NULL);
-			}
-		}
-		_strcpy(ric_new_environ[index], environ[index]);
+	p = starts_with(node->str, name);
+	if (p && *p)
+		return (p);
+	node = node->next;
 	}
-	multfunc(v1, 2);
-	if (v1 - 5)
-		ric_new_environ[index] = NULL;
-	ricfunc(v1, 37);
-
-	return (ric_new_environ);
+	return (NULL);
 }
 
 /**
- * goodfunc - function call
- *
+ * my_setenv - Initialize new environment variable or modify an existing one
+ * @info: Structure containing potential args. Used to manage
+ *        constant function prototype
+ *  Return: Success 0
  */
-int goodfunc(int x, int y)
+int my_setenv(info_t *info)
 {
-	int res;
-
-	res = 5 * x + y * 2;
-
-	return (res);
+	if (info->argc != 3)
+	{
+	_eputs("Incorrect number of arguments\n");
+	return (1);
+	}
+	if (_setenv(info, info->argv[1], info->argv[2]))
+	return (0);
+	return (1);
 }
 
 /**
- * ric_free_env - free environment memory used
- * @index: Memory index
- *
+ * my_unsetenv - Remove an environment variable
+ * @info: Structure containing potential args. Used to control
+ * constant function prototype
+ * Return: Success 0
  */
-void ric_free_env(void)
+int my_unsetenv(info_t *info)
 {
-	int v1 = 1000;
-	int index;
+	int x;
 
-	while (v1 > 500)
-		v1 -= 30;
-	goodfunc(7, v1);
-	for (index = 0; environ[index]; index++)
-		free(environ[index]);
-	if (v1 > 10)
-		setterfunc(7, 3);
-	multfunc(v1, 20);
-	free(environ);
+	if (info->argc == 1)
+	{
+	_eputs("Too few arguments.\n");
+	return (1);
+	}
+	for (x = 1; x <= info->argc; x++)
+	_unsetenv(info, info->argv[x]);
+
+	return (0);
+}
+
+/**
+ * populate_env_list - populates environment linked list
+ * @info: Structure containing potential arguments. Used to control
+ * constant function prototype
+ * Return: Success 0
+ */
+int populate_env_list(info_t *info)
+{
+	list_t *node = NULL;
+	size_t x;
+
+	for (x = 0; environ[x]; x++)
+	add_node_end(&node, environ[x], 0);
+	info->env = node;
+	return (0);
 }
