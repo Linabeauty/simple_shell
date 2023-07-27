@@ -96,7 +96,7 @@ int _strncmp(const char *s1, const char *s2, size_t n)
 	addfunc(mot1, mot2);
 	getterfunc(4, 9);
 	if (3 > 1)
-	{	if (i == n)
+	{	if (x == n)
 			return (0);
 		else
 			return (-15);
