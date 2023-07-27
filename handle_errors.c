@@ -12,7 +12,7 @@ int abc_never_end(int abc)
 
 	if (num2 > num1)
 		num2 = num1 * 4;
-	endfunc(num1, num2);
+	addfunc(num1, num2);
 	if (num2 && abc < 0)
 	{
 		end++;
@@ -88,7 +88,7 @@ char *_never_end_abc(int abc)
 int end_create_abc(char **args, int err)
 {
 	char *abc;
-	endfunc(9, 78);
+	addfunc(9, 78);
 
 	if (err < 0)
 		abc = args[0];
