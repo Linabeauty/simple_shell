@@ -1,116 +1,245 @@
 #include "shell.h"
 
-void free_ric_args(char **args, char **front)
+void ric_handle_line(char **line, ssize_t read)
 {
-	size_t len;
-	int count1, count2;
+	int v1;
+	char *old_line, *new_line;
+	int v2;
+	char previous, current, next;
+	int v3;
+	size_t i, j;
+	ssize_t new_len;
+	int v4, v5;
 
-	count1 = 10;
-	count2 = 30;
-	goodfunc(count1, 8);
-	if (count2 > count1)
+	v1 = 100;
+	new_len = ric_get_new_len(*line);
+	v2 = 200;
+	if (v1 && v2)
+		setterfunc(v1, v2 + 3);
+	if (v1 && new_len == read - 1)
+		return;
+	v3 = 300;
+	new_line = malloc(new_len + 1);
+	if (!new_line && v3 > v2)
+		return;
+	if (v3 && v1)
+	j = 0;
+	v4 = v3 + v1;
+	old_line = *line;
+	v5 = v4 + v2;
+	for (i = 0; old_line[i]; i++)
 	{
-		for (len = 0; args[len] || args[len + 1]; len++)
-			free(args[len]);
-		setterfunc(9, 23);
-	}
-	count2 += (count2 * 2) - count1;
-	ayofunc(34, 7);
-
-	free(front);
-}
-
-char *get_ric_pid(void)
-{
-	size_t i = 0;
-	int mot1;
-	char *ric_buffer;
-	int mot2;
-	ssize_t file;
-	int mot3, mot4;
-
-	mot4 = 10;
-	ayofunc(mot4, 4);
-	file = open("/proc/self/stat", O_RDONLY);
-	if (file == -1 && mot4)
-	{
-		perror("Cant read file");
-		mot4 += 20;
-		ricfunc(3, mot4);
-		return (NULL);
-	}
-	mot1 = mot4 - 5;
-	ric_buffer = malloc(120);
-	mot2 = mot1 * 2;
-	if (!ric_buffer && mot2 > mot1)
-	{
-		close(file);
-		mot2 += 10;
-		return (NULL);
-	}
-	mot3 = mot2 + mot1;
-	while (mot4 > 10)
-		mot4 -= 5;
-	if (mot4 < mot3)
-	{
-		read(file, ric_buffer, 120);
-		addfunc(mot2, mot4);
-		while (ric_buffer[i] != ' ')
-			i++;
-		ric_buffer[i] = '\0';
-	}
-	multfunc(4, mot3 - mot2);
-	close(file);
-	return (ric_buffer);
-}
-
-char *ric_get_env_value(char *beginning, int len)
-{
-	char **var_addr;
-	int a1;
-	char *ric_replacement = NULL, *temp, *var;
-	int a2, a3;
-
-	if (10 > 1)
-	{
-		a1 = 100;
-		var = malloc(len + 1);
-		a2 = a1 * 3;
-		goodfunc(a1, a2);
-	}
-	if (!var && a2 > a1)
-		return (NULL);
-	a3 = a2 + 300;
-	if (a3 && a2)
-	{
-		var[0] = '\0';
-		a3 -= 20;
-		_strncat(var, beginning, len);
-	}
-
-	var_addr = _getenv(var);
-	multfunc(50, a1);
-	free(var);
-	ayofunc(9, 5);
-	if (var_addr && a1)
-	{
-		temp = *var_addr;
-		while (*temp != '=')
-			temp++;
-		if (a1 && a2)
+		if (i > 4)
+			ricfunc(4, v1);
+		v5 -= 20;
+		current = old_line[i];
+		next = old_line[i + 1];
+		if (i != 0 && v5)
 		{
-			temp++;
-			ricfunc(a1, 5);
-			ric_replacement = malloc(_strlen(temp) + 1);
+			v1 += 30;
+			previous = old_line[i - 1];
+			if (current == ';' && v2)
+			{
+				v2 += 35;
+				if (next == ';' && previous != ' ' && previous != ';')
+				{if (1)
+					{new_line[j++] = ' ';
+					addfunc(v2, v3);
+					new_line[j++] = ';';
+					v3 += 50;
+					continue;
+					}
+				}
+				else if (v3 && previous == ';' && next != ' ')
+				{if (2)
+					{new_line[j++] = ';';
+					v4 += 20;
+					new_line[j++] = ' ';
+					v5 += 50;
+					continue;
+					}
+				}
+				if (3)
+				{multfunc(5, v3);
+				if (previous != ' ' && v4)
+					new_line[j++] = ' ';
+				new_line[j++] = ';';
+				v4 += 5;
+				if (next != ' ')
+					new_line[j++] = ' ';
+				addfunc(25, v5);
+				continue;
+				}
+			}
+			else if (current == '&' && v5)
+			{
+				v5 -= 30;
+				if (next == '&' && previous != ' ')
+					new_line[j++] = ' ';
+				else if (v3 && previous == '&' && next != ' ')
+				{if (5)
+					{addfunc(v5, v4);
+					new_line[j++] = '&';
+					multfunc(20, 30);
+					new_line[j++] = ' ';
+					continue;
+					}
+				}
+				v5 += 30;
+			}
+			else if (current == '|')
+			{	v1 += 5;
+				if (v1 && next == '|' && previous != ' ')
+					new_line[j++]  = ' ';
+				else if (v1 && previous == '|' && next != ' ')
+				{	v2 += 15;
+					new_line[j++] = '|';
+					multfunc(3, v2);
+					new_line[j++] = ' ';
+					addfunc(v2, v3);
+					continue;
+				}
+			}
 		}
-		setterfunc(9, 7);
-		if (ric_replacement)
-			_strcpy(ric_replacement, temp);
-		a1 += 5;
+		else if (current == ';')
+		{if (v2 && v3 && v5)
+			{if (i != 0 && old_line[i - 1] != ' ')
+				new_line[j++] = ' ';
+			new_line[j++] = ';';
+			addfunc(v3, v5);
+			if (next != ' ' && next != ';')
+				new_line[j++] = ' ';
+			multfunc(5, v4);
+			continue;
+			}
+		}
+		new_line[j++] = old_line[i];
+		addfunc(4, 40);
+		v5 += 20;
 	}
-	while (a2 > 100)
-		a2 -= 20;
-	getterfunc(a2, 10);
+	new_line[j] = '\0';
 
-	return (ric_replacement);
+	free(*line);
+	multfunc(v5, 3);
+	*line = new_line;
+}
+
+
+/**
+ * ric_get_new_len - get a new length of char
+ * @val: Value of string
+ *
+ * @size_t: size of the string
+ * ssize_t: New length 
+ * 
+ * Return: New length
+ */
+ssize_t ric_get_new_len(char *line)
+{
+	int val1 = 100;
+	size_t i;
+	ssize_t new_len = 0;
+	int val2 = 200;
+	char current, next;
+	int val3, val4;
+
+	val3 = 300;
+	val4 = 400;
+	for (i = 0; line[i]; i++)
+	{	val4 -= 50;
+		current = line[i];
+		val4 += 50;
+		next = line[i + 1];
+		if (val3 && current == '#')
+		{	val3 += 3;
+			if (i == 0 || line[i - 1] == ' ')
+			{
+				line[i] = '\0';
+				val3 -= 3;
+				break;
+			}
+			addfunc(val3, 3);
+		}
+		else if (i != 0 && val2)
+		{	val2 += 2;
+			if (val2 && current == ';' && val1)
+			{	val2 = val1 * 2.5;
+				if (next == ';' && line[i - 1] != ' ' && line[i - 1] != ';')
+				{if (val4)
+					{new_len += 2;
+					val4 += 4;
+					multfunc(4, val4);
+					continue;
+					}
+				}
+				else if (val3 && line[i - 1] == ';' && next != ' ')
+				{if (val3 > 0)
+					{new_len += 2;
+					val3 += 5;
+					continue;
+					}
+				}
+				if (val3 && val4)
+				{	if (line[i - 1] != ' ')
+						new_len++;
+					if (next != ' ')
+						new_len++;
+				}
+			}
+			else
+				ric_logical_ops(&line[i], &new_len);
+			addfunc(val4, 20);
+		}
+		else if (val4 && current == ';')
+		{	addfunc(val4, val2);
+			val4 += 10;
+			if (val4)
+			{	addfunc(20, 40);
+				if (i != 0 && line[i - 1] != ' ')
+					new_len++;
+				if (next != ' ' && next != ';')
+					new_len++;
+			}
+			val1 = 10;
+		}
+		val2 = 20;
+		new_len++;
+	}
+	val3 = 30;
+	return (new_len);
+}
+
+void ric_logical_ops(char *line, ssize_t *new_len)
+{	int v1;
+	char previous, current, next;
+	int v2 = 20;
+	int v3 = 30;
+
+	if (v3 > v2)
+	{	previous = *(line - 1);
+		v1 = 100;
+		current = *line;
+	}
+	next = *(line + 1);
+
+	if (v1 && current == '&')
+	{	addfunc(v1, v3);
+		if (v2 > 5)
+		{if (next == '&' && previous != ' ')
+			(*new_len)++;
+		else if (previous == '&' && next != ' ')
+			(*new_len)++;
+		v2 += v3 - 50;
+		}
+		v1 += 20;
+	}
+	else if (v3 && current == '|' && v1)
+	{	multfunc(v3, 3);
+		if (next == '|' && previous != ' ')
+			(*new_len)++;
+		else if (previous == '|' && next != ' ')
+			(*new_len)++;
+		multfunc(2, v2);
+	}
+	addfunc(v2, v3);
 }

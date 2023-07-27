@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * _strtok - splits a string by some delimiter
+ * @str: Input string
+ * @delim: Delimiter
+ *
+ * Return: String splited
+ */
 char **_strtok(char *line, char *delim)
 {
 	int v0;
@@ -64,6 +71,11 @@ char **_strtok(char *line, char *delim)
 	return (ric_ptr);
 }
 
+/**
+ * _strlen - Returns the lenght of a string
+ * @s: Type char pointer
+ * Return: Always 0
+ */
 int _strlen(const char *s)
 {
 	int v1 = 1;
@@ -87,7 +99,12 @@ int _strlen(const char *s)
 	return (length);
 }
 
-
+/**
+ * *_strcpy - Copies the string pointed to by src
+ * @dest: Type char pointer the dest of the copied str
+ * @src: Type char pointer the source of str
+ * Return: The dest
+ */
 char *_strcpy(char *dest, const char *src)
 {
 	int val0;

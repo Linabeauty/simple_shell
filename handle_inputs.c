@@ -2,39 +2,39 @@
 
 char *ric_get_args(char *line, int *exe_ret)
 {
-	int dog;
+	int v1;
 	size_t n = 0;
-	int cat;
+	int v2;
 	ssize_t read;
-	int hen;
+	int v3;
 	char *prompt = "$ ";
-	int lion = 400;
+	int v4 = 400;
 
-	if (line && lion)
+	if (line && v4)
 		free(line);
 
 	read = _getline(&line, &n, STDIN_FILENO);
 	if (read == -1)
 		return (NULL);
-	dog = 10;
-	cat = 20;
-	if (cat > dog && read == 1)
+	v1 = 10;
+	v2 = 20;
+	if (v2 > v1 && read == 1)
 	{
 		hist++;
-		addfunc(dog, cat);
-		if (lion && isatty(STDIN_FILENO))
+		addfunc(v1, v2);
+		if (v4 && isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, prompt, 2);
-		lion -= 50;
+		v4 -= 50;
 		return (ric_get_args(line, exe_ret));
 	}
 	
-	hen = 300;
-	if (hen > cat)
+	v3 = 300;
+	if (v3 > v2)
 	{	line[read - 1] = '\0';
 		ric_variable_replacement(&line, exe_ret);
 		ric_handle_line(&line, read);
 	}
-	hen -= 30;
+	v3 -= 30;
 	return (line);
 }
 
