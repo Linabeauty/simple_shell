@@ -1,140 +1,171 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
-#include <errno.h>
 #include <stdio.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <string.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <fcntl.h>
+#include <errno.h>
 
-#define END_OF_FILE -2
-/* comment */
-#define EXIT -3
+#define READ_BUF_SIZE 1024
+#define WRITE_BUF_SIZE 1024
+#define BUF_FLUSH -1
 
-typedef struct list_s
-{
-	char *dir;
-	struct list_s *next;
-} list_t;
+#define CMD_NORM    0
+#define CMD_OR      1
+#define CMD_AND     2
+#define CMD_CHAIN   3
 
-char *name;
+#define CONVERT_LOWERCASE   1
+#define CONVERT_UNSIGNED    2
 
-int hist;
+#define USE_GETLINE 0
+#define USE_STRTOK 0
+
+#define HIST_FILE   ".my_shell_history"
+#define HIST_MAX    4096
+
 extern char **environ;
 
-char **_strtok(char *line, char *delim);
-int hsh(ino_t *, char **);
-char *ric_get_location(char *command);
-char *_itoa(int num);
-char *ric_error_env(char **args);
-char *ric_error_1(char **args);
-void ric_free_env(void);
-char a(int x);
-int token_len(char *str, char *delim);
-int ric_count_tokens(char *str, char *delim);
-char **_strtok(char *line, char *delim);
-int _strncmp(const char *s1, const char *s2, size_t n);
-char *_strncat(char *dest, const char *src, size_t n);
-char b(int y);
-char *_strcpy(char *dest, const char *src);
-char *_strcat(char *dest, const char *src);
-int ricfunc(int, int);
-char **ric_replace_aliases(char **args);
-char cfunc(int num);
-char *ric_error_2_exit(char **args);
-char *ric_error_2_cd(char **args);
-char *_strchr(char *s, char c);
-char firstfunc(int abc);
-int (*ric_get_builtin(char *command))(char **args, char **front);
-int ric_shellby_exit(char **args, char **front);
-char *ric_error_2_syntax(char **args);
-char *ric_error_126(char **args);
-int ayofunc(int, int);
-char *ric_error_127(char **args);
-char *get_pid(void);
-char *ric_get_env_value(char *beginning, int len);
-char *def(int ef);
-int ric_shellby_alias(char **args, char __attribute__((__unused__)) **front);
-int ric_shellby_help(char **args, char __attribute__((__unused__)) **front);
-char mychar(char *c, char *cc);
-char *charfunc(char **cha);
-char **_copyenv(void);
-char **_getenv(const char *var);
-
-typedef struct builtin_s
+typedef struct liststr
 {
-	char *name;
-	int (*f)(char **argv, char **front);
-} builtin_t;
+    int num;
+    char *str;
+    struct liststr *next;
+} list_t;
 
-int execute(char **args, char **front);
-int *twofunc(char *c);
-int ric_run_args(char **args, char **front, int *exe_ret);
-int fun(int, int);
-int ric_handle_args(int *exe_ret);
-int goodfunc(int, int);
-int ric_check_args(char **args);
-int _strlen(const char *s);
-int _strspn(char *s, char *accept);
-int ric_shellby_cd(char **args, char __attribute__((__unused__)) **front);
-int ric_call_args(char **args, char **front, int *exe_ret);
-int ric_proc_file_commands(char *file_path, int *exe_ret);
-int addfunc(int x, int y);
-int multfunc(int x, int y);
-int ric_create_error(char **args, int err);
-int setterfunc(int, int);
-
-typedef struct alias_s
+typedef struct passinfo
 {
-	char *name;
-	char *value;
-	struct alias_s *next;
-} ric_alias_t;
+    char *arg;
+    char **argv;
+    char *path;
+    int argc;
+    unsigned int line_count;
+    int err_num;
+    int linecount_flag;
+    char *fname;
+    list_t *env;
+    list_t *history;
+    list_t *alias;
+    char **environ;
+    int env_changed;
+    int status;
 
-void ric_handle_line(char **line, ssize_t read);
-int ric_cant_open(char *file_path);
-void ric_variable_replacement(char **args, int *exe_ret);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void ric_assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b);
-void ric_help_all(void);
-int _strcmp(char *s1, char *s2);
-void ric_help_alias(void);
-void ric_sig_handler(int sig);
-int getterfunc(int, int);
-int execute(char **args, char **front);
-int ric_shellby_unsetenv(char **args, char __attribute__((__unused__)) **front);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void free_list(list_t *head);
-void help_cd(void);
-void ric_free_alias_list(ric_alias_t *head);
-void ric_help_unsetenv(void);
-void help_history(void);
-void ric_logical_ops(char *line, ssize_t *new_len);
-void ric_free_args(char **args, char **front);
-void ric_set_alias(char *var_name, char *value);
-void ric_help_env(void);
-void ric_help_setenv(void);
-void ric_print_alias(ric_alias_t *alias);
-void ric_help_exit(void);
-void ric_help_help(void);
-void ric_handle_line(char **line, ssize_t read);
-list_t *ric_get_path_dir(char *path);
-ric_alias_t *aliases;
-void func1(char *jk);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
-ric_alias_t *ric_add_alias_end(ric_alias_t **head, char *name, char *value);
-list_t *ric_add_node_end(list_t **head, char *dir);
-void ric_free_list(list_t *head);
-int ric_shellby_env(char **args, char __attribute__((__unused__)) **front);
-int ric_shellby_setenv(char **args, char __attribute__((__unused__)) **front);
-char *ric_get_args(char *line, int *exe_ret);
-ssize_t ric_get_new_len(char *line);
+    char **cmd_buf;
+    int cmd_buf_type;
+    int readfd;
+    int histcount;
+} info_t;
 
+#define INFO_INIT \
+{NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
+    0, 0, 0}
 
-#endif /* _SHELL_H_ */
+typedef struct builtin
+{
+    char *type;
+    int (*func)(info_t *);
+} builtin_table;
+
+/* Function prototypes */
+int hsh(info_t *, char **);
+int find_builtin(info_t *);
+void find_cmd(info_t *);
+void fork_cmd(info_t *);
+
+int is_cmd(info_t *, char *);
+char *dup_chars(char *, int, int);
+char *find_path(info_t *, char *, char *);
+
+int loophsh(char **);
+
+void _eputs(char *);
+int _eputchar(char);
+int _putfd(char c, int fd);
+int _putsfd(char *str, int fd);
+
+int _strlen(char *);
+int _strcmp(char *, char *);
+char *starts_with(const char *, const char *);
+char *_strcat(char *, char *);
+
+char *_strcpy(char *, char *);
+char *_strdup(const char *);
+void _puts(char *);
+int _putchar(char);
+
+char *_strncpy(char *, char *, int);
+char *_strncat(char *, char *, int);
+char *_strchr(char *, char);
+
+char **strtow(char *, char *);
+char **strtow2(char *, char);
+
+int bfree(void **);
+
+int interactive(info_t *);
+int is_delim(char, char *);
+int _isalpha(int);
+int _atoi(char *);
+
+int _erratoi(char *);
+void print_error(info_t *, char *);
+int print_d(int, int);
+char *convert_number(long int, int, int);
+void remove_comments(char *);
+
+int _myexit(info_t *);
+int _mycd(info_t *);
+int _myhelp(info_t *);
+
+int _myhistory(info_t *);
+int _myalias(info_t *);
+
+ssize_t get_input(info_t *);
+int _getline(info_t *, char **, size_t *);
+void sigintHandler(int);
+
+void clear_info(info_t *);
+void set_info(info_t *, char **);
+void free_info(info_t *, int);
+
+char *_getenv(info_t *, const char *);
+int _myenv(info_t *);
+int _mysetenv(info_t *);
+int _myunsetenv(info_t *);
+int populate_env_list(info_t *);
+
+char **get_environ(info_t *);
+int _unsetenv(info_t *, char *);
+int _setenv(info_t *, char *, char *);
+
+char *get_history_file(info_t *info);
+int write_history(info_t *info);
+int read_history(info_t *info);
+int build_history_list(info_t *info, char *buf, int linecount);
+int renumber_history(info_t *info);
+
+list_t *add_node(list_t **, const char *, int);
+list_t *add_node_end(list_t **, const char *, int);
+size_t print_list_str(const list_t *);
+int delete_node_at_index(list_t **, unsigned int);
+void free_list(list_t **);
+
+size_t list_len(const list_t *);
+char **list_to_strings(list_t *);
+size_t print_list(const list_t *);
+list_t *node_starts_with(list_t *, char *, char);
+ssize_t get_node_index(list_t *, list_t *);
+
+int is_chain(info_t *, char *, size_t *);
+void check_chain(info_t *, char *, size_t *, size_t, size_t);
+int replace_alias(info_t *);
+int replace_vars(info_t *);
+int replace_string(char **, char *);
+
+#endif /* MY_SHELL_H */
