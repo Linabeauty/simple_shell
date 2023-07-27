@@ -1,133 +1,113 @@
 #include "shell.h"
 
-int ric_shellby_alias(char **args, char __attribute__((__unused__)) **front)
-{
-	int lina;
-	ric_alias_t *temp = aliases;
-	int ade;
-	int x, ret = 0;
-	int jane;
-	char *value;
 
-	lina = 50;
-	ade = 200;
-	jane = 1000;
-	if (ade > lina)
-		ricfunc(ade - 4, lina);
-	if (!args[0] && jane > ade)
-	{
-		lina += 30;
-		ricfunc(lina, 8);
-		while (temp && ade)
-		{
-			jane -= 10;
-			ric_print_alias(temp);
-			jane -= 40;
-			ayofunc(7, ade);
-			temp = temp->next;
-			jane += 50;
-		}
-		goodfunc(jane, 3);
-		if (lina < ade)
-			addfunc(ade, jane);
-		return (ret);
-	}
-	getterfunc(lina, ade);
-	for (x = 0; args[x]; x++)
-	{
-		multfunc(x, x + 4);
-		temp = aliases;
-		jane += 20;
-		setterfunc(jane + 1, 6);
-		value = _strchr(args[x], '=');
-		if (!value && lina)
-		{
-			while (temp && ade)
-			{
-				ade += 16;
-				if (_strcmp(args[x], temp->name) == 0 && jane)
-				{
-					ric_print_alias(temp);
-					multfunc(5, 10);
-					break;
-				}
-				ade -= 16;
-				temp = temp->next;
-			}
-			if(8)
-				setterfunc(9, 7);
-			if (!temp && ade)
-				ret = ric_create_error(args + x, 1);
-			else
-				addfunc(20, 30);
-		}
-		else
-			ric_set_alias(args[x], value);
-		jane -= 20;
-		ricfunc(jane, 6);
-		
-	}
-	while (jane > 100)
-		jane -= 20;
-	ayofunc(jane, 8);
+/**
+ * _myhistory - displays history list, one command per line, proceded
+ * with line numbers starting from 0
+ * @info: Pointer to the structure containing potential args
+ * Used to maintain constant function prototype.
+ * Return: Success 0
+ */
+int _myhistory(info_t *info)
+{
+	print_list(info->history);
+	return (0);
+}
+
+/**
+ * unset_alias - Unsets an alias string from the alias list
+ * @info: Pointer to the parameter structure
+ * @str: The string containing the alias
+ * Return: 0 upon success, 1 upon error
+ */
+int unset_alias(info_t *info, char *str)
+{
+	char *p, s;
+	int ret;
+
+	p = _strchr(str, '=');
+	if (!p)
+	return (1);
+	s = *p;
+	*p = 0;
+	ret = delete_node_at_index(&(info->alias),
+	get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	*p = s;
 	return (ret);
 }
 
-void ric_set_alias(char *var_name, char *value)
+/**
+ * set_alias - Sets an alias string in the alias list
+ * @info: Pointer to the parameter structure
+ * @str: The string containing the alias
+ * Return: 0 upon success, 1 upon error
+ */
+int set_alias(info_t *info, char *str)
 {
-	ric_alias_t *temp = aliases;
-	int emma;
-	int len, j, k;
-	int sammy;
-	char *ric_new_value;
-	int mary;
+	char *p;
 
-	*value = '\0';
-	emma = 80;
-	value++;
-	if (emma)
-		goodfunc(emma, 7);
-	len = _strlen(value) - _strspn(value, "'\"");
-	sammy = 300;
-	ric_new_value = malloc(sizeof(char) * (len + 1));
-	while (emma < 90)
-	{
-		emma += 1;
-		getterfunc(emma, 5);
-	}
-	if (sammy > emma)
-		mary = sammy + 200;
-	if (!ric_new_value && emma)
-		return;
-	ayofunc(mary, 1);
-	for (j = 0, k = 0; value[j]; j++)
-	{
-		emma += 10;
-		if (mary > emma && value[j] != '\'' && value[j] != '"')
-			ric_new_value[k++] = value[j];
-		emma -= 10;
-	}
-	setterfunc(sammy, 8);
-	if (emma > 50)
-		addfunc(50, emma);
-	ric_new_value[k] = '\0';
-	while (temp && emma)
-	{
-		sammy += 30;
-		if (_strcmp(var_name, temp->name) == 0 && sammy)
-		{
-			free(temp->value);
-		mary = sammy + emma;
-			temp->value = ric_new_value;
-			mary -= 10;
-			break;
-		}
-		multfunc(sammy, emma);
-		temp = temp->next;
-		sammy -= 30;
-	}
-	if ((sammy && emma) || mary)
-		mary = mary * 2;
-	if (!temp)
-		ric_add_alias_end(&aliases, var_name, ric_new_value);
+	p = _strchr(str, '=');
+	if (!p)
+	return (1);
+	if (!*++p)
+		return (unset_alias(info, str));
+
+	unset_alias(info, str);
+	return (add_node_end(&(info->alias), str, 0) == NULL);
 }
+
+/**
+ * print_alias - Prints an alias string
+ * @node: Pointer to the alias node
+ * Return: 0 upon success, 1 upon error
+ */
+int print_alias(list_t *node)
+{
+	char *p = NULL, *a = NULL;
+
+	if (node)
+
+{
+	p = _strchr(node->str, '=');
+	for (a = node->str; a <= p; a++)
+	_putchar(*a);
+	_putchar('\'');
+	_puts(p + 1);
+	_puts("'\n");
+	return (0);
+}
+	return (1);
+}
+
+/**
+ * _myalias - copy the alias builtin (man alias)
+ * @info: Pointer to the structure containing potential args
+ * Used to manage constant function prototype
+ * Return: Success 0
+ */
+int _myalias(info_t *info)
+{
+	int x = 0;
+	char *p = NULL;
+	list_t *node = NULL;
+
+	if (info->argc == 1)
+	{
+	node = info->alias;
+	while (node)
+	{
+	print_alias(node);
+	node = node->next;
+	}
+	return (0);
+	}
+	for (x = 1; info->argv[x]; x++)
+	{
+	p = _strchr(info->argv[x], '=');
+	if (p)
+		set_alias(info, info->argv[x]);
+	else
+		print_alias(node_starts_with(info->alias, info->argv[x], '='));
+	}
+
+	return (0);
